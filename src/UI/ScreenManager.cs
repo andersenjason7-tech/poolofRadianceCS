@@ -36,6 +36,7 @@ namespace PoolOfRadiance.UI
             
             _currentScreen = screen;
             _currentScreen.OnEnter();
+            _isRunning = true;
         }
         
         public void PopScreen()

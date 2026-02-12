@@ -18,15 +18,19 @@ namespace PoolOfRadiance
             // Set console size for better display
             try
             {
-                Console.SetWindowSize(Math.Min(120, Console.LargestWindowWidth), 
-                                     Math.Min(40, Console.LargestWindowHeight));
-                Console.SetBufferSize(120, 300);
+                if (!Console.IsOutputRedirected && !Console.IsInputRedirected)
+                {
+                    Console.SetWindowSize(Math.Min(120, Console.LargestWindowWidth),
+                                         Math.Min(40, Console.LargestWindowHeight));
+                    Console.SetBufferSize(120, 300);
+                }
             }
+
             catch
             {
                 // If we can't set size, just continue
             }
-            
+
             Console.Clear();
             Console.WriteLine("╔════════════════════════════════════════════════════════════════════════════════╗");
             Console.WriteLine("║                                                                                ║");
@@ -41,9 +45,9 @@ namespace PoolOfRadiance
             Console.WriteLine("  [3] Exit");
             Console.WriteLine();
             Console.Write("  Choice: ");
-            
+
             var choice = Console.ReadKey(true);
-            
+
             switch (choice.KeyChar)
             {
                 case '1':
@@ -56,42 +60,46 @@ namespace PoolOfRadiance
                     return;
             }
         }
-        
+
         static void RunFullGame()
         {
+
+
             Console.Clear();
             Console.WriteLine("\n=== CHARACTER CREATION ===\n");
-            
+
             // Create a sample party
             Party party = CreateParty();
-            
+
             Console.WriteLine("\nYour party is ready to begin their adventure!");
             Console.WriteLine("\nPress any key to enter the town of Phlan...");
             Console.ReadKey(true);
-            
+
             // Start the screen-based UI system
             var screenManager = new ScreenManager();
-            
+            Console.ReadKey(true);
+
             // Start at the town screen
             screenManager.PushScreen(new TownScreen(screenManager, party, "Phlan"));
-            
+            Console.ReadKey(true);
+
             // Main game loop
             while (screenManager.IsRunning)
             {
                 screenManager.Render();
                 screenManager.Update();
             }
-            
+
             Console.Clear();
             Console.WriteLine("\n\nThank you for playing Pool of Radiance!");
             Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey();
         }
-        
+
         static Party CreateParty()
         {
             Party party = new Party();
-            
+
             // Create fighter
             var fighter = new Character("Aldric", CharacterRace.Human, CharacterClass.Fighter);
             fighter.RollStats();
@@ -99,7 +107,7 @@ namespace PoolOfRadiance
             fighter.HitPointsCurrent = 12;
             party.AddMember(fighter);
             Console.WriteLine($"✓ {fighter.Name} the Fighter joins your party");
-            
+
             // Create cleric
             var cleric = new Character("Thalia", CharacterRace.Human, CharacterClass.Cleric);
             cleric.RollStats();
@@ -107,7 +115,7 @@ namespace PoolOfRadiance
             cleric.HitPointsCurrent = 8;
             party.AddMember(cleric);
             Console.WriteLine($"✓ {cleric.Name} the Cleric joins your party");
-            
+
             // Create magic-user
             var wizard = new Character("Eldrin", CharacterRace.Elf, CharacterClass.MagicUser);
             wizard.RollStats();
@@ -115,7 +123,7 @@ namespace PoolOfRadiance
             wizard.HitPointsCurrent = 4;
             party.AddMember(wizard);
             Console.WriteLine($"✓ {wizard.Name} the Magic-User joins your party");
-            
+
             // Create thief
             var thief = new Character("Raven", CharacterRace.Halfling, CharacterClass.Thief);
             thief.RollStats();
@@ -123,26 +131,26 @@ namespace PoolOfRadiance
             thief.HitPointsCurrent = 6;
             party.AddMember(thief);
             Console.WriteLine($"✓ {thief.Name} the Thief joins your party");
-            
+
             // Give them some starting gold
             party.DistributeGold(100);
-            
+
             return party;
         }
-        
+
         static void RunQuickDemo()
         {
             Console.Clear();
             Console.WriteLine("=== QUICK COMBAT DEMO ===\n");
-            
+
             // Create a sample party
             Party party = CreateParty();
-            
+
             Console.WriteLine("\n\nCreating enemies...");
-            
+
             // Create some enemies
             var enemies = new System.Collections.Generic.List<Character>();
-            
+
             for (int i = 0; i < 3; i++)
             {
                 var goblin = new Character($"Goblin {i + 1}", CharacterRace.Human, CharacterClass.Fighter);
@@ -155,24 +163,24 @@ namespace PoolOfRadiance
                 enemies.Add(goblin);
                 Console.WriteLine($"✓ {goblin.Name} appears!");
             }
-            
+
             Console.WriteLine("\n\nPress any key to begin combat...");
             Console.ReadKey(true);
-            
+
             // Start combat with screen system
             var screenManager = new ScreenManager();
             screenManager.PushScreen(new CombatScreen(screenManager, party, enemies, "Demo Arena"));
-            
+
             while (screenManager.IsRunning)
             {
                 screenManager.Render();
                 screenManager.Update();
             }
-            
+
             Console.Clear();
             Console.WriteLine("\n\n=== COMBAT COMPLETE ===");
             party.PrintStatus();
-            
+
             Console.WriteLine("\n\nPress any key to exit...");
             Console.ReadKey();
         }

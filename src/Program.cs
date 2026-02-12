@@ -13,6 +13,9 @@ namespace PoolOfRadiance
     /// </summary>
     class Program
     {
+        const int windowWidth = 120;
+        const int windowLength = 40;
+
         static void Main(string[] args)
         {
             // Set console size for better display
@@ -20,8 +23,8 @@ namespace PoolOfRadiance
             {
                 if (!Console.IsOutputRedirected && !Console.IsInputRedirected)
                 {
-                    Console.SetWindowSize(Math.Min(120, Console.LargestWindowWidth),
-                                         Math.Min(40, Console.LargestWindowHeight));
+                    Console.SetWindowSize(Math.Min(windowWidth, Console.LargestWindowWidth),
+                                         Math.Min(windowLength, Console.LargestWindowHeight));
                     Console.SetBufferSize(120, 300);
                 }
             }

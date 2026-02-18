@@ -16,6 +16,12 @@ namespace PoolOfRadiance
         const int windowWidth = 120;
         const int windowLength = 40;
 
+        // Random name lists for character generation
+        static readonly string[] FighterNames = { "Aldric", "Barrack", "Corin", "Darius", "Evan", "Gareth", "Hector", "Ironus" };
+        static readonly string[] ClericNames = { "Thalia", "Bella", "Cassandra", "Diana", "Elara", "Faye", "Grace", "Helena" };
+        static readonly string[] WizardNames = { "Eldrin", "Alastor", "Cedric", "Draven", "Eamon", "Fennimore", "Gregori", "Hugo" };
+        static readonly string[] ThiefNames = { "Raven", "Ash", "Blade", "Cipher", "Drake", "Echo", "Felix", "Gideon" };
+
         static void Main(string[] args)
         {
             // Set console size for better display
@@ -99,36 +105,42 @@ namespace PoolOfRadiance
             Console.ReadKey();
         }
 
+        static string GetRandomName(string[] nameList)
+        {
+            var random = new Random();
+            return nameList[random.Next(nameList.Length)];
+        }
+
         static Party CreateParty()
         {
             Party party = new Party();
 
-            // Create fighter
-            var fighter = new Character("Aldric", CharacterRace.Human, CharacterClass.Fighter);
+            // Create fighter with random name
+            var fighter = new Character(GetRandomName(FighterNames), CharacterRace.Human, CharacterClass.Fighter);
             fighter.RollStats();
             fighter.HitPointsMax = 12;
             fighter.HitPointsCurrent = 12;
             party.AddMember(fighter);
             Console.WriteLine($"✓ {fighter.Name} the Fighter joins your party");
 
-            // Create cleric
-            var cleric = new Character("Thalia", CharacterRace.Human, CharacterClass.Cleric);
+            // Create cleric with random name
+            var cleric = new Character(GetRandomName(ClericNames), CharacterRace.Human, CharacterClass.Cleric);
             cleric.RollStats();
             cleric.HitPointsMax = 8;
             cleric.HitPointsCurrent = 8;
             party.AddMember(cleric);
             Console.WriteLine($"✓ {cleric.Name} the Cleric joins your party");
 
-            // Create magic-user
-            var wizard = new Character("Eldrin", CharacterRace.Elf, CharacterClass.MagicUser);
+            // Create magic-user with random name
+            var wizard = new Character(GetRandomName(WizardNames), CharacterRace.Elf, CharacterClass.MagicUser);
             wizard.RollStats();
             wizard.HitPointsMax = 4;
             wizard.HitPointsCurrent = 4;
             party.AddMember(wizard);
             Console.WriteLine($"✓ {wizard.Name} the Magic-User joins your party");
 
-            // Create thief
-            var thief = new Character("Raven", CharacterRace.Halfling, CharacterClass.Thief);
+            // Create thief with random name
+            var thief = new Character(GetRandomName(ThiefNames), CharacterRace.Halfling, CharacterClass.Thief);
             thief.RollStats();
             thief.HitPointsMax = 6;
             thief.HitPointsCurrent = 6;

@@ -111,41 +111,51 @@ namespace PoolOfRadiance
             return nameList[random.Next(nameList.Length)];
         }
 
+        static int GetRandomHitPoints(int minHP, int maxHP)
+        {
+            var random = new Random();
+            return random.Next(minHP, maxHP + 1);
+        }
+
         static Party CreateParty()
         {
             Party party = new Party();
 
-            // Create fighter with random name
+            // Create fighter with random name and hit points
             var fighter = new Character(GetRandomName(FighterNames), CharacterRace.Human, CharacterClass.Fighter);
             fighter.RollStats();
-            fighter.HitPointsMax = 12;
-            fighter.HitPointsCurrent = 12;
+            int fighterHP = GetRandomHitPoints(10, 14);
+            fighter.HitPointsMax = fighterHP;
+            fighter.HitPointsCurrent = fighterHP;
             party.AddMember(fighter);
-            Console.WriteLine($"✓ {fighter.Name} the Fighter joins your party");
+            Console.WriteLine($"✓ {fighter.Name} the Fighter joins your party (HP: {fighter.HitPointsMax})");
 
-            // Create cleric with random name
+            // Create cleric with random name and hit points
             var cleric = new Character(GetRandomName(ClericNames), CharacterRace.Human, CharacterClass.Cleric);
             cleric.RollStats();
-            cleric.HitPointsMax = 8;
-            cleric.HitPointsCurrent = 8;
+            int clericHP = GetRandomHitPoints(6, 9);
+            cleric.HitPointsMax = clericHP;
+            cleric.HitPointsCurrent = clericHP;
             party.AddMember(cleric);
-            Console.WriteLine($"✓ {cleric.Name} the Cleric joins your party");
+            Console.WriteLine($"✓ {cleric.Name} the Cleric joins your party (HP: {cleric.HitPointsMax})");
 
-            // Create magic-user with random name
+            // Create magic-user with random name and hit points
             var wizard = new Character(GetRandomName(WizardNames), CharacterRace.Elf, CharacterClass.MagicUser);
             wizard.RollStats();
-            wizard.HitPointsMax = 4;
-            wizard.HitPointsCurrent = 4;
+            int wizardHP = GetRandomHitPoints(4, 7);
+            wizard.HitPointsMax = wizardHP;
+            wizard.HitPointsCurrent = wizardHP;
             party.AddMember(wizard);
-            Console.WriteLine($"✓ {wizard.Name} the Magic-User joins your party");
+            Console.WriteLine($"✓ {wizard.Name} the Magic-User joins your party (HP: {wizard.HitPointsMax})");
 
-            // Create thief with random name
+            // Create thief with random name and hit points
             var thief = new Character(GetRandomName(ThiefNames), CharacterRace.Halfling, CharacterClass.Thief);
             thief.RollStats();
-            thief.HitPointsMax = 6;
-            thief.HitPointsCurrent = 6;
+            int thiefHP = GetRandomHitPoints(6, 9);
+            thief.HitPointsMax = thiefHP;
+            thief.HitPointsCurrent = thiefHP;
             party.AddMember(thief);
-            Console.WriteLine($"✓ {thief.Name} the Thief joins your party");
+            Console.WriteLine($"✓ {thief.Name} the Thief joins your party (HP: {thief.HitPointsMax})");
 
             // Give them some starting gold
             party.DistributeGold(100);

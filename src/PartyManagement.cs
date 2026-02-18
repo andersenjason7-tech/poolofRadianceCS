@@ -14,6 +14,12 @@ namespace PoolOfRadiance
         private const int MinPartySize = 2;
         private const int MaxPartySize = 8;
 
+        // Random name lists for character generation
+        private static readonly string[] FighterNames = { "Aldric", "Barrack", "Corin", "Darius", "Evan", "Gareth", "Hector", "Ironus" };
+        private static readonly string[] ClericNames = { "Thalia", "Bella", "Cassandra", "Diana", "Elara", "Faye", "Grace", "Helena" };
+        private static readonly string[] WizardNames = { "Eldrin", "Alastor", "Cedric", "Draven", "Eamon", "Fennimore", "Gregori", "Hugo" };
+        private static readonly string[] ThiefNames = { "Raven", "Ash", "Blade", "Cipher", "Drake", "Echo", "Felix", "Gideon" };
+
         private Party _party;
         private string _partyName;
         private List<string> _quests;
@@ -41,6 +47,68 @@ namespace PoolOfRadiance
             _quests = new List<string>();
             _alliances = new List<string>();
             _enemies = new List<string>();
+        }
+
+        /// <summary>
+        /// Create a default adventure party with a fighter, cleric, wizard, and thief
+        /// Each character gets a random name and random hit points within class limits
+        /// </summary>
+        public void CreateDefaultParty()
+        {
+            // Create fighter with random name and hit points
+            var fighter = new Character(GetRandomName(FighterNames), CharacterRace.Human, CharacterClass.Fighter);
+            fighter.RollStats();
+            int fighterHP = GetRandomHitPoints(10, 14);
+            fighter.HitPointsMax = fighterHP;
+            fighter.HitPointsCurrent = fighterHP;
+            AddCharacter(fighter);
+
+            // Create cleric with random name and hit points
+            var cleric = new Character(GetRandomName(ClericNames), CharacterRace.Human, CharacterClass.Cleric);
+            cleric.RollStats();
+            int clericHP = GetRandomHitPoints(6, 9);
+            cleric.HitPointsMax = clericHP;
+            cleric.HitPointsCurrent = clericHP;
+            AddCharacter(cleric);
+
+            // Create magic-user with random name and hit points
+            var wizard = new Character(GetRandomName(WizardNames), CharacterRace.Elf, CharacterClass.MagicUser);
+            wizard.RollStats();
+            int wizardHP = GetRandomHitPoints(4, 7);
+            wizard.HitPointsMax = wizardHP;
+            wizard.HitPointsCurrent = wizardHP;
+            AddCharacter(wizard);
+
+            // Create thief with random name and hit points
+            var thief = new Character(GetRandomName(ThiefNames), CharacterRace.Halfling, CharacterClass.Thief);
+            thief.RollStats();
+            int thiefHP = GetRandomHitPoints(6, 9);
+            thief.HitPointsMax = thiefHP;
+            thief.HitPointsCurrent = thiefHP;
+            AddCharacter(thief);
+
+            // Give them some starting gold
+            _party.DistributeGold(100);
+
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// Get a random name from the provided name list
+        /// </summary>
+        private static string GetRandomName(string[] nameList)
+        {
+            var random = new Random();
+            return nameList[random.Next(nameList.Length)];
+        }
+
+        /// <summary>
+        /// Get a random hit point value within the specified range
+        /// </summary>
+        private static int GetRandomHitPoints(int minHP, int maxHP)
+        {
+            var random = new Random();
+            return random.Next(minHP, maxHP + 1);
         }
 
         /// <summary>

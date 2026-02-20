@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PoolOfRadiance.UI
 {
@@ -10,12 +11,11 @@ namespace PoolOfRadiance.UI
     public class ScreenManager
     {
         private Stack<IGameScreen>? _screenStack;
-        private IGameScreen? _currentScreen;
         private bool _isRunning;
         
         public ScreenManager()
         {
-            if (_currentScreen != null)
+            if (CurrentScreen != null)
             {
             _screenStack = new Stack<IGameScreen>();
             _isRunning = true;
@@ -28,14 +28,14 @@ namespace PoolOfRadiance.UI
             {
                 _screenStack = new Stack<IGameScreen>();
             }
-            if (_currentScreen != null)
+            if (CurrentScreen != null)
             {
-                _currentScreen.OnPause();
-                _screenStack.Push(_currentScreen);
+                CurrentScreen.OnPause();
+                _screenStack.Push(CurrentScreen);
             }
             
-            _currentScreen = screen;
-            _currentScreen.OnEnter();
+            CurrentScreen = screen;
+            CurrentScreen.OnEnter();
             _isRunning = true;
         }
         
@@ -45,52 +45,54 @@ namespace PoolOfRadiance.UI
             {
                 _screenStack = new Stack<IGameScreen>();
             }
-            if (_currentScreen != null)
+            if (CurrentScreen != null)
             {
-                _currentScreen.OnExit();
+                CurrentScreen.OnExit();
             }
             
             if (_screenStack.Count > 0)
             {
-                _currentScreen = _screenStack.Pop();
-                _currentScreen.OnResume();
+                CurrentScreen = _screenStack.Pop();
+                CurrentScreen.OnResume();
             }
             else
             {
-                _currentScreen = null;
+                CurrentScreen = null;
                 _isRunning = false;
             }
         }
         
         public void SwitchScreen(IGameScreen newScreen)
         {
-            if (_currentScreen != null)
+            if (CurrentScreen != null)
             {
-                _currentScreen.OnExit();
+                CurrentScreen.OnExit();
             }
             
-            _currentScreen = newScreen;
-            _currentScreen.OnEnter();
+            CurrentScreen = newScreen;
+            CurrentScreen.OnEnter();
         }
         
         public void Update()
         {
-            if (_currentScreen != null)
+            if (CurrentScreen != null)
             {
-                _currentScreen.Update();
+                CurrentScreen.Update();
             }
         }
         
         public void Render()
         {
-            if (_currentScreen != null)
+            if (CurrentScreen != null)
             {
-                _currentScreen.Render();
+                CurrentScreen.Render();
             }
         }
         
         public bool IsRunning => _isRunning;
-        public IGameScreen CurrentScreen => _currentScreen;
+
+        [AllowNull]
+        public IGameScreen CurrentScreen { get; private set; }
     }
     
     /// <summary>

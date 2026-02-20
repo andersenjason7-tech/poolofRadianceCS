@@ -4,6 +4,7 @@ using PoolOfRadiance.Characters;
 using PoolOfRadiance.Combat;
 using PoolOfRadiance.UI;
 using PoolOfRadiance.UI.Screens;
+using System.Runtime.InteropServices;
 
 namespace PoolOfRadiance
 {
@@ -23,9 +24,20 @@ namespace PoolOfRadiance
             {
                 if (!Console.IsOutputRedirected && !Console.IsInputRedirected)
                 {
-                    Console.SetWindowSize(Math.Min(windowWidth, Console.LargestWindowWidth),
+                    
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        try
+                        {
+                            Console.SetWindowSize(Math.Min(windowWidth, Console.LargestWindowWidth),
                                          Math.Min(windowLength, Console.LargestWindowHeight));
-                    Console.SetBufferSize(120, 300);
+                            Console.SetBufferSize(120, 300);
+                        }
+                        catch (Exception)
+                        {
+                            // Fail silently if buffer size can't be set
+                        }
+                    }
                 }
             }
 

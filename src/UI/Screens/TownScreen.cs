@@ -12,7 +12,7 @@ namespace PoolOfRadiance.UI.Screens
         private Party _party;
         private string _townName;
         private string[] _locations;
-        private int _selectedLocation ;
+     //   private int _selectedLocation ;
         
         public TownScreen(ScreenManager screenManager, Party party, string townName) 
             : base(screenManager)
@@ -31,7 +31,7 @@ namespace PoolOfRadiance.UI.Screens
                 "8. View Party",
                 "9. Camp (Rest)"
             };
-            _selectedLocation = 0;
+          //  _selectedLocation = 0;
         }
         
         public override string ScreenName => "Town Exploration";

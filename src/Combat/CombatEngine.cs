@@ -77,12 +77,6 @@ namespace PoolOfRadiance.Combat
         
         public void StartNextTurn()
         {
-
-_currentCombatant = _turnOrder.Dequeue();
-
-// Safety check (shouldn't be null, but good practice)
-if (_currentCombatant == null) return;
-
             if (_turnOrder.Count == 0)
             {
                 // Round complete, check for combat end

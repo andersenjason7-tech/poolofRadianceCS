@@ -71,8 +71,9 @@ namespace PoolOfRadiance
             Console.Clear();
             Console.WriteLine("\n=== CHARACTER CREATION ===\n");
 
-            // Create a sample party
-            Party party = CreateParty();
+            // Create a party using PartyManagement
+            var partyManager = new PartyManagement("Phlan Adventurers");
+            partyManager.CreateDefaultParty();
 
             Console.WriteLine("\nYour party is ready to begin their adventure!");
             Console.WriteLine("\nPress any key to enter the town of Phlan...");
@@ -83,7 +84,7 @@ namespace PoolOfRadiance
             Console.ReadKey(true);
 
             // Start at the town screen
-            screenManager.PushScreen(new TownScreen(screenManager, party, "Phlan"));
+            screenManager.PushScreen(new TownScreen(screenManager, partyManager.Party, "Phlan"));
             Console.ReadKey(true);
 
             // Main game loop
@@ -99,57 +100,16 @@ namespace PoolOfRadiance
             Console.ReadKey();
         }
 
-        static Party CreateParty()
-        {
-            Party party = new Party();
-
-            // Create fighter
-            var fighter = new Character("Aldric", CharacterRace.Human, CharacterClass.Fighter);
-            fighter.RollStats();
-            fighter.HitPointsMax = 12;
-            fighter.HitPointsCurrent = 12;
-            party.AddMember(fighter);
-            Console.WriteLine($"✓ {fighter.Name} the Fighter joins your party");
-
-            // Create cleric
-            var cleric = new Character("Thalia", CharacterRace.Human, CharacterClass.Cleric);
-            cleric.RollStats();
-            cleric.HitPointsMax = 8;
-            cleric.HitPointsCurrent = 8;
-            party.AddMember(cleric);
-            Console.WriteLine($"✓ {cleric.Name} the Cleric joins your party");
-
-            // Create magic-user
-            var wizard = new Character("Eldrin", CharacterRace.Elf, CharacterClass.MagicUser);
-            wizard.RollStats();
-            wizard.HitPointsMax = 4;
-            wizard.HitPointsCurrent = 4;
-            party.AddMember(wizard);
-            Console.WriteLine($"✓ {wizard.Name} the Magic-User joins your party");
-
-            // Create thief
-            var thief = new Character("Raven", CharacterRace.Halfling, CharacterClass.Thief);
-            thief.RollStats();
-            thief.HitPointsMax = 6;
-            thief.HitPointsCurrent = 6;
-            party.AddMember(thief);
-            Console.WriteLine($"✓ {thief.Name} the Thief joins your party");
-
-            // Give them some starting gold
-            party.DistributeGold(100);
-
-            return party;
-        }
-
         static void RunQuickDemo()
         {
             Console.Clear();
             Console.WriteLine("=== QUICK COMBAT DEMO ===\n");
 
-            // Create a sample party
-            Party party = CreateParty();
+            // Create a party using PartyManagement
+            var partyManager = new PartyManagement("Combat Demo Party");
+            partyManager.CreateDefaultParty();
 
-            Console.WriteLine("\n\nCreating enemies...");
+            Console.WriteLine("\nCreating enemies...");
 
             // Create some enemies
             var enemies = new System.Collections.Generic.List<Character>();
@@ -172,7 +132,7 @@ namespace PoolOfRadiance
 
             // Start combat with screen system
             var screenManager = new ScreenManager();
-            screenManager.PushScreen(new CombatScreen(screenManager, party, enemies, "Demo Arena"));
+            screenManager.PushScreen(new CombatScreen(screenManager, partyManager.Party, enemies, "Demo Arena"));
 
             while (screenManager.IsRunning)
             {
@@ -182,7 +142,7 @@ namespace PoolOfRadiance
 
             Console.Clear();
             Console.WriteLine("\n\n=== COMBAT COMPLETE ===");
-            party.PrintStatus();
+            partyManager.Party.PrintStatus();
 
             Console.WriteLine("\n\nPress any key to exit...");
             Console.ReadKey();

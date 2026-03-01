@@ -20,11 +20,13 @@ namespace PoolOfRadianceCS.Tests
             var game = new Game();
 
             var stateField = typeof(Game).GetField("_currentState", BindingFlags.NonPublic | BindingFlags.Instance);
-            var currentState = (GameState)stateField.GetValue(game)!;
+            Assert.NotNull(stateField);
+            var currentState = (GameState)(stateField?.GetValue(game) ?? throw new InvalidOperationException());
             Assert.Equal(GameState.MainMenu, currentState);
 
             var runningField = typeof(Game).GetField("_isRunning", BindingFlags.NonPublic | BindingFlags.Instance);
-            var isRunning = (bool)runningField.GetValue(game)!;
+            Assert.NotNull(runningField);
+            var isRunning = (bool)(runningField?.GetValue(game) ?? throw new InvalidOperationException());
             Assert.False(isRunning);
         }
 
@@ -35,7 +37,8 @@ namespace PoolOfRadianceCS.Tests
             game.ChangeState(GameState.Exploration);
 
             var stateField = typeof(Game).GetField("_currentState", BindingFlags.NonPublic | BindingFlags.Instance);
-            var currentState = (GameState)stateField.GetValue(game)!;
+            Assert.NotNull(stateField);
+            var currentState = (GameState)(stateField?.GetValue(game) ?? throw new InvalidOperationException());
             Assert.Equal(GameState.Exploration, currentState);
         }
 
@@ -46,15 +49,19 @@ namespace PoolOfRadianceCS.Tests
 
             // grab the private input manager and request quit
             var inputField = typeof(Game).GetField("_inputManager", BindingFlags.NonPublic | BindingFlags.Instance);
-            var inputManager = (InputManager)inputField.GetValue(game)!;
+            Assert.NotNull(inputField);
+            var inputManager = (InputManager?)(inputField!.GetValue(game) ?? throw new InvalidOperationException());
+            Assert.NotNull(inputManager);
             inputManager.RequestQuit();
 
             // invoke the private Update method
             var updateMethod = typeof(Game).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance);
-            updateMethod.Invoke(game, null);
+            Assert.NotNull(updateMethod);
+            updateMethod!.Invoke(game, null);
 
             var runningField = typeof(Game).GetField("_isRunning", BindingFlags.NonPublic | BindingFlags.Instance);
-            var isRunning = (bool)runningField.GetValue(game)!;
+            Assert.NotNull(runningField);
+            var isRunning = (bool)runningField!.GetValue(game)!;
             Assert.False(isRunning);
         }
     }

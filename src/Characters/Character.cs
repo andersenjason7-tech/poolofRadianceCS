@@ -130,16 +130,23 @@ namespace PoolOfRadiance.Characters
         private int CalculateTHAC0()
         {
             // Base THAC0 by class and level (simplified)
-            int baseTHAC0 = Class switch
+            if (Class == CharacterClass.Fighter ||
+                Class == CharacterClass.Paladin ||
+                Class == CharacterClass.Ranger)
             {
-                CharacterClass.Fighter or CharacterClass.Paladin or CharacterClass.Ranger => 20 - Level,
-                CharacterClass.Cleric => 20 - (Level / 2),
-                CharacterClass.MagicUser => 20 - (Level / 3),
-                CharacterClass.Thief => 20 - (Level / 2),
-                _ => 20
-            };
-            
-            return baseTHAC0;
+                return 20 - Level;
+            }
+
+            if (Class == CharacterClass.Cleric)
+                return 20 - (Level / 2);
+
+            if (Class == CharacterClass.MagicUser)
+                return 20 - (Level / 3);
+
+            if (Class == CharacterClass.Thief)
+                return 20 - (Level / 2);
+
+            return 20;
         }
         
         private int CalculateArmorClass()
@@ -256,14 +263,20 @@ namespace PoolOfRadiance.Characters
             
             // Roll for additional HP
             Random rand = new Random();
-            int hitDie = Class switch
-            {
-                CharacterClass.Fighter or CharacterClass.Paladin or CharacterClass.Ranger => 10,
-                CharacterClass.Cleric => 8,
-                CharacterClass.Thief => 6,
-                CharacterClass.MagicUser => 4,
-                _ => 6
-            };
+            int hitDie;
+            
+            if (Class == CharacterClass.Fighter ||
+                Class == CharacterClass.Paladin ||
+                Class == CharacterClass.Ranger)
+                hitDie = 10;
+            else if (Class == CharacterClass.Cleric)
+                hitDie = 8;
+            else if (Class == CharacterClass.Thief)
+                hitDie = 6;
+            else if (Class == CharacterClass.MagicUser)
+                hitDie = 4;
+            else
+                hitDie = 6; // default hit die for unexpected classes
             
             int hpGain = rand.Next(1, hitDie + 1) + Stats.GetHPModifier();
             if (hpGain < 1) hpGain = 1; // Always gain at least 1 HP
@@ -288,14 +301,6 @@ namespace PoolOfRadiance.Characters
         Gnome
     }
     
-    public enum CharacterClass
-    {
-        Fighter,
-        Ranger,
-        Paladin,
-        Cleric,
-        MagicUser,
-        Thief,
-        // Multi-class combinations would be handled separately
-    }
+    // CharacterClass has been moved to its own file and is now a class instead of
+    // an enum.  See CharacterClass.cs for details.
 }

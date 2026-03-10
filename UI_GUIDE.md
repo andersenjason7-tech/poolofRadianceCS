@@ -101,6 +101,7 @@ Jump straight into a combat encounter to test the tactical combat system.
 - HP, AC, THAC0, Experience
 - Ability scores (STR, INT, WIS, DEX, CON, CHA)
 - Character status (Alive/Dead)
+- **Inventory** (gold and carried items per character)
 
 **Controls:**
 - `Any key`: Return to previous screen

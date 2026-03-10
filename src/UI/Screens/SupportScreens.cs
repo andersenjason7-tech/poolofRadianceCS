@@ -51,6 +51,22 @@ namespace PoolOfRadiance.UI.Screens
                 
                 string status = member.IsAlive ? "Healthy" : "DEAD";
                 Console.WriteLine($"  Status: {status}");
+
+                // display inventory for this character
+                Console.WriteLine("  Inventory:");
+                Console.WriteLine($"    Gold: {member.Inventory.Gold}");
+                if (member.Inventory.Items.Count == 0)
+                {
+                    Console.WriteLine("    (empty)");
+                }
+                else
+                {
+                    foreach (var itm in member.Inventory.Items)
+                    {
+                        Console.WriteLine($"    - {itm.Name}");
+                    }
+                }
+
                 Console.WriteLine();
             }
             

@@ -51,43 +51,52 @@ namespace PoolOfRadiance
 
         /// <summary>
         /// Create a default adventure party with a fighter, cleric, wizard, and thief
-        /// Each character gets a random name and random hit points within class limits
+        /// Each character gets a random name, random hit points within class limits,
+        /// and a small inventory purse of gold (50–150 pieces each).  Party-wide
+        /// gold is still seeded separately.
         /// </summary>
         public void CreateDefaultParty()
         {
-            // Create fighter with random name and hit points
+            // helper used for random values throughout this method
+            var random = new Random();
+
+            // Create fighter with random name, hit points and inventory
             var fighter = new Character(GetRandomName(FighterNames), CharacterRace.Human, CharacterClass.Fighter);
             fighter.RollStats();
             int fighterHP = GetRandomHitPoints(10, 14);
             fighter.HitPointsMax = fighterHP;
             fighter.HitPointsCurrent = fighterHP;
+            fighter.Inventory.AddGold(random.Next(50, 151));
             AddCharacter(fighter);
 
-            // Create cleric with random name and hit points
+            // Create cleric with random name, hit points and inventory
             var cleric = new Character(GetRandomName(ClericNames), CharacterRace.Human, CharacterClass.Cleric);
             cleric.RollStats();
             int clericHP = GetRandomHitPoints(6, 9);
             cleric.HitPointsMax = clericHP;
             cleric.HitPointsCurrent = clericHP;
+            cleric.Inventory.AddGold(random.Next(50, 151));
             AddCharacter(cleric);
 
-            // Create magic-user with random name and hit points
+            // Create magic-user with random name, hit points and inventory
             var wizard = new Character(GetRandomName(WizardNames), CharacterRace.Elf, CharacterClass.MagicUser);
             wizard.RollStats();
             int wizardHP = GetRandomHitPoints(4, 7);
             wizard.HitPointsMax = wizardHP;
             wizard.HitPointsCurrent = wizardHP;
+            wizard.Inventory.AddGold(random.Next(50, 151));
             AddCharacter(wizard);
 
-            // Create thief with random name and hit points
+            // Create thief with random name, hit points and inventory
             var thief = new Character(GetRandomName(ThiefNames), CharacterRace.Halfling, CharacterClass.Thief);
             thief.RollStats();
             int thiefHP = GetRandomHitPoints(6, 9);
             thief.HitPointsMax = thiefHP;
             thief.HitPointsCurrent = thiefHP;
+            thief.Inventory.AddGold(random.Next(50, 151));
             AddCharacter(thief);
 
-            // Give them some starting gold
+            // Give them some starting party gold
             _party.DistributeGold(100);
 
             Console.WriteLine();
